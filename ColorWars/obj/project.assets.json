@@ -2,6 +2,18 @@
   "version": 3,
   "targets": {
     "net8.0": {
+      "Contentless/4.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/_._": {}
+        },
+        "runtime": {
+          "lib/net8.0/_._": {}
+        },
+        "build": {
+          "build/Contentless.targets": {}
+        }
+      },
       "MonoGame.Content.Builder.Task/3.8.2.1105": {
         "type": "package",
         "build": {
@@ -99,9 +111,170 @@
           "lib/netcoreapp2.0/_._": {}
         }
       }
+    },
+    "net8.0/osx-x64": {
+      "Contentless/4.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/_._": {}
+        },
+        "runtime": {
+          "lib/net8.0/_._": {}
+        },
+        "build": {
+          "build/Contentless.targets": {}
+        }
+      },
+      "MonoGame.Content.Builder.Task/3.8.2.1105": {
+        "type": "package",
+        "build": {
+          "build/MonoGame.Content.Builder.Task.props": {},
+          "build/MonoGame.Content.Builder.Task.targets": {}
+        }
+      },
+      "MonoGame.Framework.DesktopGL/3.8.2.1105": {
+        "type": "package",
+        "dependencies": {
+          "MonoGame.Library.SDL": "2.26.5.5",
+          "NVorbis": "0.10.4"
+        },
+        "compile": {
+          "lib/net8.0/MonoGame.Framework.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/MonoGame.Framework.dll": {
+            "related": ".xml"
+          }
+        },
+        "native": {
+          "runtimes/osx/native/libopenal.1.dylib": {}
+        },
+        "build": {
+          "build/MonoGame.Framework.DesktopGL.targets": {}
+        }
+      },
+      "MonoGame.Library.SDL/2.26.5.5": {
+        "type": "package",
+        "native": {
+          "runtimes/osx/native/libSDL2.dylib": {}
+        }
+      },
+      "NVorbis/0.10.4": {
+        "type": "package",
+        "dependencies": {
+          "System.Memory": "4.5.3",
+          "System.ValueTuple": "4.5.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/NVorbis.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/NVorbis.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "System.Memory/4.5.3": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp2.1/_._": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.1/_._": {}
+        }
+      },
+      "System.ValueTuple/4.5.0": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp2.0/_._": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/_._": {}
+        }
+      }
     }
   },
   "libraries": {
+    "Contentless/4.2.0": {
+      "sha512": "Ikho7DROpdgdBO56O2J/IHp1m94xWwb7cIuiBTF531A7jvtmApQnN1U0SIuHDaObxLYCW32fvH14EwAtULOKiQ==",
+      "type": "package",
+      "path": "contentless/4.2.0",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Logo.png",
+        "README.md",
+        "build/Contentless.targets",
+        "contentless.4.2.0.nupkg.sha512",
+        "contentless.nuspec",
+        "lib/net8.0/_._",
+        "tools/AssimpNetter.dll",
+        "tools/BCnEncoder.dll",
+        "tools/Contentless.deps.json",
+        "tools/Contentless.dll",
+        "tools/Contentless.exe",
+        "tools/Contentless.pdb",
+        "tools/Contentless.runtimeconfig.json",
+        "tools/CppNet.dll",
+        "tools/KtxSharp.dll",
+        "tools/Microsoft.Build.Framework.dll",
+        "tools/Microsoft.Build.dll",
+        "tools/Microsoft.NET.StringTools.dll",
+        "tools/Microsoft.Toolkit.HighPerformance.dll",
+        "tools/Microsoft.Win32.SystemEvents.dll",
+        "tools/MonoGame.Framework.Content.Pipeline.dll",
+        "tools/MonoGame.Framework.dll",
+        "tools/NVorbis.dll",
+        "tools/Newtonsoft.Json.dll",
+        "tools/NuGet.Common.dll",
+        "tools/NuGet.Configuration.dll",
+        "tools/NuGet.Frameworks.dll",
+        "tools/SharpDX.D3DCompiler.dll",
+        "tools/SharpDX.dll",
+        "tools/System.Configuration.ConfigurationManager.dll",
+        "tools/System.Drawing.Common.dll",
+        "tools/System.Reflection.MetadataLoadContext.dll",
+        "tools/System.Security.Cryptography.ProtectedData.dll",
+        "tools/System.Security.Permissions.dll",
+        "tools/System.Windows.Extensions.dll",
+        "tools/runtimes/android-arm/native/libopenal.so",
+        "tools/runtimes/android-arm64/native/libopenal.so",
+        "tools/runtimes/android-x64/native/libopenal.so",
+        "tools/runtimes/android-x86/native/libopenal.so",
+        "tools/runtimes/ios-arm64/native/libopenal.dylib",
+        "tools/runtimes/iossimulator-arm64/native/libopenal.dylib",
+        "tools/runtimes/iossimulator-x64/native/libopenal.dylib",
+        "tools/runtimes/linux-arm64/native/libassimp.so",
+        "tools/runtimes/linux-x64/native/libSDL2-2.0.so.0",
+        "tools/runtimes/linux-x64/native/libassimp.so",
+        "tools/runtimes/linux-x64/native/libfreeimage.so",
+        "tools/runtimes/linux-x64/native/libfreetype.so",
+        "tools/runtimes/linux-x64/native/libopenal.so",
+        "tools/runtimes/osx-arm64/native/libassimp.dylib",
+        "tools/runtimes/osx-x64/native/libassimp.dylib",
+        "tools/runtimes/osx/native/libSDL2-2.0.0.dylib",
+        "tools/runtimes/osx/native/libfreeimage.dylib",
+        "tools/runtimes/osx/native/libfreetype.dylib",
+        "tools/runtimes/osx/native/libopenal.dylib",
+        "tools/runtimes/unix/lib/net6.0/System.Drawing.Common.dll",
+        "tools/runtimes/win-x64/native/FreeImage.dll",
+        "tools/runtimes/win-x64/native/SDL2.dll",
+        "tools/runtimes/win-x64/native/assimp.dll",
+        "tools/runtimes/win-x64/native/freetype.dll",
+        "tools/runtimes/win-x64/native/libmojoshader_64.dll",
+        "tools/runtimes/win-x64/native/openal.dll",
+        "tools/runtimes/win-x86/native/assimp.dll",
+        "tools/runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.dll",
+        "tools/runtimes/win/lib/net6.0/System.Drawing.Common.dll",
+        "tools/runtimes/win/lib/net6.0/System.Security.Cryptography.ProtectedData.dll",
+        "tools/runtimes/win/lib/net6.0/System.Windows.Extensions.dll"
+      ]
+    },
     "MonoGame.Content.Builder.Task/3.8.2.1105": {
       "sha512": "wNlkLaITOqMs9MmCYLp3Qc7QfFng3FhIq/b+njdYV3cTVpLYgs/i56FYtJjm8jLoUA/2sJ36Qo/uqWpgW+jBuQ==",
       "type": "package",
@@ -233,6 +406,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "Contentless >= 4.2.0",
       "MonoGame.Content.Builder.Task >= 3.8.2.1105",
       "MonoGame.Framework.DesktopGL >= 3.8.2.1105"
     ]
@@ -256,6 +430,7 @@
         "net8.0"
       ],
       "sources": {
+        "/usr/local/Cellar/dotnet/9.0.101/libexec/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -272,7 +447,7 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "all"
+        "auditMode": "direct"
       },
       "SdkAnalysisLevel": "9.0.100"
     },
@@ -280,6 +455,10 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "Contentless": {
+            "target": "Package",
+            "version": "[4.2.0, )"
+          },
           "MonoGame.Content.Builder.Task": {
             "target": "Package",
             "version": "[3.8.2.1105, )"
@@ -306,7 +485,7 @@
             "version": "[8.0.11, 8.0.11]"
           },
           {
-            "name": "Microsoft.NETCore.App.Host.osx-arm64",
+            "name": "Microsoft.NETCore.App.Host.osx-x64",
             "version": "[8.0.11, 8.0.11]"
           },
           {
@@ -319,7 +498,12 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/Cellar/dotnet/9.0.101/libexec/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
+      }
+    },
+    "runtimes": {
+      "osx-x64": {
+        "#import": []
       }
     }
   }
