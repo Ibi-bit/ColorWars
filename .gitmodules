@@ -1,3 +1,6 @@
 [submodule "ColorWars/libs/vector"]
 	path = ColorWars/libs/vector
 	url = https://github.com/Ullerman/MonoGame2DVectorGraphics
+[submodule "ColorWars/libs/VectorGui"]
+	path = ColorWars/libs/VectorGui
+	url = https://github.com/Ullerman/vectorguilib

@@ -1,0 +1,32 @@
+# Visual Studio Code settings
+.vscode/
+
+# MonoGame build artifacts
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+*.pidb
+*.sln.docstates
+
+# MonoGame content pipeline output
+Content/bin/   
+Content/obj/
+*.mgcb
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# NuGet packages
+*.nupkg
+packages/
+*.snupkg
+
+# Logs
+*.log
+
+# Rider/JetBrains IDEs
+.idea/
+*.sln.iml
