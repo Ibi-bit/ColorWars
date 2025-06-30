@@ -23,7 +23,7 @@ public class Game1 : Game
         _graphics.PreferredBackBufferWidth = 540;
         _graphics.PreferredBackBufferHeight = 960;
         Window.AllowUserResizing = true;
-        j  
+        
         //9:16 aspect ratio
         _graphics.IsFullScreen = false;
         _graphics.ApplyChanges();
