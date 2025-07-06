@@ -34,7 +34,7 @@ public class BoardPiece
             null,
             0,
             Vector2.Zero,
-            new Gui.GuiRectangle(Vector2.Zero, Vector2.One * 50, Color.White)
+            new Gui.GuiRoundedRectangle(Vector2.Zero, Vector2.One * 50, 10, Color.White)
         );
     }
 
@@ -42,6 +42,27 @@ public class BoardPiece
     {
         if (GuiRectangle != null && GuiRectangle.IsVisible)
         {
+            // Lighten color if hovered
+            Color drawColor = GuiRectangle.Color;
+
+            if (GuiRectangle.IsHovered(Mouse.GetState()))
+            {
+                if (Player != null)
+                    drawColor = new Color(
+                        (int)Math.Min(drawColor.R + 60, 255),
+                        (int)Math.Min(drawColor.G + 60, 255),
+                        (int)Math.Min(drawColor.B + 60, 255),
+                        drawColor.A
+                    );
+                else
+                    drawColor = new Color(
+                        (int)Math.Min(drawColor.R - 30, 255),
+                        (int)Math.Min(drawColor.G - 30, 255),
+                        (int)Math.Min(drawColor.B - 30, 255),
+                        drawColor.A
+                    );
+            }
+            GuiRectangle.Color = drawColor;
             GuiRectangle.Draw(spriteBatch, primitiveBatch);
             if (Player != null)
             {
@@ -473,7 +494,7 @@ public class GuiBoard : Board
                 piece.Draw(spriteBatch, primitiveBatch, font);
             }
         }
-if (explosion.HasValue)
+        if (explosion.HasValue)
         {
             var (from, t, col) = explosion.Value;
             DrawExplosion(spriteBatch, primitiveBatch, from, t, cellSize, col);

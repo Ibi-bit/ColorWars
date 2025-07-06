@@ -13,7 +13,12 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private PrimitiveBatch _primitiveBatch;
-    private Player[] _players = new Player[4];
+    private List<Player> _players = new List<Player>
+    {
+        new Player(Color.Blue),
+        new Player(Color.Green),
+        new Player(Color.Yellow),
+    };
     private bool _isFirstTurn = true;
     private int _currentPlayerIndex = 0;
 
@@ -21,12 +26,20 @@ public class Game1 : Game
     private SpriteFont _font;
 
     private GuiBoard _board;
+    private GuiBoard _preExplosionBoard; // Holds the board state before explosion for animation
 
     private int _explosionIndex = 0;
     private float _explosionTimer = 0f;
     private float _explosionDuration = 0.3f; // seconds per explosion
     private bool _isAnimatingExplosions = false;
     private bool _pendingTurnAdvance = false;
+
+    private Gui.GuiRoundedRectangle _resetButton = new Gui.GuiRoundedRectangle(
+        new Vector2(50f, 50f),
+        new Vector2(2f, 1f),
+        27f,
+        Color.Red
+    );
 
     private Texture2D _debugRedTexture;
 
@@ -52,17 +65,18 @@ public class Game1 : Game
         _primitiveBatch.CreateTextures();
 
         _board = new GuiBoard(
-            10,
-            10,
+            7,
+            7,
             Vector2.Zero,
             new Vector2(0.75f, 0.4f),
-            new Gui.GuiRectangle(
+            new Gui.GuiRoundedRectangle(
                 Vector2.Zero,
                 new Vector2(0.75f, 0.4f)
                     * new Vector2(
                         _graphics.PreferredBackBufferWidth,
                         _graphics.PreferredBackBufferHeight
                     ),
+                10f,
                 Color.BlanchedAlmond
             )
         );
@@ -100,14 +114,21 @@ public class Game1 : Game
                 {
                     _isAnimatingExplosions = false;
                     _explodedPieces?.Clear();
+                    // if (_preExplosionBoard != null)
+                    // {
+                    //     // Copy the exploded state from _board (which was updated in UpdatePlayer)
+                    //     // to _preExplosionBoard so next draw is correct
+                    //     _preExplosionBoard = null;
+                    // }
                     if (_pendingTurnAdvance)
                     {
-                        if (_isFirstTurn && _currentPlayerIndex == _players.Length - 1)
+                        if (_isFirstTurn && _currentPlayerIndex == _players.Count - 1)
                         {
                             _isFirstTurn = false;
                         }
-                        _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Length;
-                        for (int i = 0; i < _players.Length; i++)
+                        _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
+
+                        for (int i = 0; i < _players.Count; i++)
                         {
                             if (!_isFirstTurn && _players[i].Score == 0)
                             {
@@ -119,17 +140,24 @@ public class Game1 : Game
                     }
                 }
             }
-            return; // Skip input/turn logic while animating
+            return;
         }
+        _preExplosionBoard = CloneBoard(_board);
 
         MouseState mouseState = Mouse.GetState();
-        (bool turn, _explodedPieces) = _board.UpdatePlayer(
-            _players[_currentPlayerIndex],
-            mouseState,
-            _isFirstTurn
-        );
+        bool turn = false;
+        if (!IsPlayerDead(_players[_currentPlayerIndex]) || _isFirstTurn)
+            (turn, _explodedPieces) = _board.UpdatePlayer(
+                _players[_currentPlayerIndex],
+                mouseState,
+                _isFirstTurn
+            );
+        else
+            _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
+
         if (_explodedPieces != null && _explodedPieces.Count > 0)
         {
+            // Make a deep copy of the board before explosion for animation
             _isAnimatingExplosions = true;
             _explosionIndex = 0;
             _explosionTimer = 0f;
@@ -139,12 +167,19 @@ public class Game1 : Game
         }
         if (turn)
         {
-            if (_isFirstTurn && _currentPlayerIndex == _players.Length - 1)
+            if (_isFirstTurn && _currentPlayerIndex == _players.Count - 1)
             {
                 _isFirstTurn = false;
             }
-            _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Length;
-            for (int i = 0; i < _players.Length; i++)
+            _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
+            // Skip inactive players
+            int safety2 = 0;
+            while (!_players[_currentPlayerIndex].IsActive && safety2 < _players.Count)
+            {
+                _currentPlayerIndex = (_currentPlayerIndex + 1) % _players.Count;
+                safety2++;
+            }
+            for (int i = 0; i < _players.Count; i++)
             {
                 if (!_isFirstTurn && _players[i].Score == 0)
                 {
@@ -153,15 +188,118 @@ public class Game1 : Game
                 _players[i].Score = 0;
             }
         }
+        _resetButton.Size = new Vector2(
+            _board.Background.Size.X * 0.8f,
+            _board.Background.Size.Y * 0.2f
+        );
+        _resetButton.Position = new Vector2(
+            _board.Background.Position.X + _board.Background.Size.X / 2 - _resetButton.Size.X / 2,
+            _board.Background.Position.Y + _board.Background.Size.Y + _resetButton.Size.Y / 2
+        );
+        if (_resetButton.IsPressed(mouseState))
+        {
+            ResetGame();
+        }
+        else if (_resetButton.IsHovered(mouseState))
+        {
+            _resetButton.Color = Color.LightPink;
+        }
+        else
+        {
+            _resetButton.Color = Color.Red;
+        }
 
         base.Update(gameTime);
+    }
+
+    private bool IsPlayerDead(Player player)
+    {
+        foreach (var row in _board.BoardArray)
+        {
+            foreach (var piece in row)
+            {
+                if (piece.Player == player)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private GuiBoard CloneBoard(GuiBoard board)
+    {
+        var newBoard = new GuiBoard(
+            (int)board.BoardSize.X,
+            (int)board.BoardSize.Y,
+            board.Position,
+            board.Size,
+            new Gui.GuiRoundedRectangle(
+                board.Background.Position,
+                board.Background.Size,
+                10f,
+                board.Background.Color
+            )
+        );
+        for (int i = 0; i < board.BoardArray.Length; i++)
+        {
+            for (int j = 0; j < board.BoardArray[i].Length; j++)
+            {
+                var piece = board.BoardArray[i][j];
+                var newPiece = new BoardPiece(
+                    piece.Player,
+                    piece.PieceLevel,
+                    piece.BoardPosition,
+                    new Gui.GuiRoundedRectangle(
+                        piece.GuiRectangle.Position,
+                        piece.GuiRectangle.Size,
+                        10f,
+                        piece.GuiRectangle.Color
+                    )
+                );
+                newBoard.BoardArray[i][j] = newPiece;
+            }
+        }
+        return newBoard;
+    }
+
+    private void ResetGame()
+    {
+        _board = new GuiBoard(
+            7,
+            7,
+            Vector2.Zero,
+            new Vector2(0.75f, 0.4f),
+            new Gui.GuiRoundedRectangle(
+                Vector2.Zero,
+                new Vector2(0.75f, 0.4f)
+                    * new Vector2(
+                        _graphics.PreferredBackBufferWidth,
+                        _graphics.PreferredBackBufferHeight
+                    ),
+                10f,
+                Color.BlanchedAlmond
+            )
+        );
+        _isFirstTurn = true;
+        _currentPlayerIndex = 0;
+        _explodedPieces?.Clear();
+        _isAnimatingExplosions = false;
+        _pendingTurnAdvance = false;
+        foreach (var player in _players)
+        {
+            player.IsActive = true;
+            player.Score = 0;
+        }
+        _preExplosionBoard = null;
+        _explosionIndex = 0;
+        _explosionTimer = 0f;
     }
 
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
-        // Draw explosion animation using Board.Draw
         if (
             _isAnimatingExplosions
             && _explodedPieces != null
@@ -170,11 +308,9 @@ public class Game1 : Game
         {
             var (from, _) = _explodedPieces[_explosionIndex];
             float t = _explosionTimer / _explosionDuration;
-
             Color color = _players[_currentPlayerIndex].Color;
-            // DEBUG: Draw a red rectangle at the explosion location
-
-            _board.Draw(
+            // Draw the pre-explosion board, not the updated one
+            (_preExplosionBoard ?? _board).Draw(
                 _spriteBatch,
                 _primitiveBatch,
                 _font,
@@ -184,6 +320,24 @@ public class Game1 : Game
                 ),
                 (from, t, color)
             );
+            if (_explosionIndex > 0)
+            {
+                Vector2[] explodedPieces = _explodedPieces[_explosionIndex - 1].Item2;
+                Vector2 centre = _explodedPieces[_explosionIndex - 1].Item1;
+                _preExplosionBoard.BoardArray[(int)centre.X][(int)centre.Y] = _board.BoardArray[
+                    (int)centre.X
+                ][(int)centre.Y];
+
+                for (int i = 0; i < explodedPieces.Length; i++)
+                {
+                    Vector2 piece = explodedPieces[i];
+
+                    _preExplosionBoard.BoardArray[(int)piece.X][(int)piece.Y] = _board.BoardArray[
+                        (int)piece.X
+                    ][(int)piece.Y];
+                }
+                { }
+            }
         }
         else
         {
@@ -194,6 +348,31 @@ public class Game1 : Game
                 new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight)
             );
         }
+        _resetButton.Draw(_spriteBatch, _primitiveBatch);
+        string resetText = "Reset Game";
+        Vector2 textSize = _font.MeasureString(resetText);
+        Vector2 buttonCenter = _resetButton.Position + _resetButton.Size / 2f;
+        Vector2 textPos = buttonCenter - textSize / 2f;
+        Vector2 scale = new Vector2(
+            Math.Min(_resetButton.Size.X / textSize.X, _resetButton.Size.Y / textSize.Y) * 0.8f // 80% of button
+        );
+        _spriteBatch.DrawString(
+            _font,
+            resetText,
+            buttonCenter,
+            Color.White,
+            0f,
+            textSize / 2f,
+            scale,
+            SpriteEffects.None,
+            0f
+        );
+        _spriteBatch.DrawString(
+            _font,
+            $"Current Player: {_players[_currentPlayerIndex].Color}",
+            new Vector2(10, 10),
+            Color.Black
+        );
         _spriteBatch.End();
         base.Draw(gameTime);
     }
