@@ -371,7 +371,7 @@ public class Game1 : Game
             _font,
             $"Current Player: {_players[_currentPlayerIndex].Color}",
             new Vector2(10, 10),
-            Color.Black
+            _players[_currentPlayerIndex].Color
         );
         _spriteBatch.End();
         base.Draw(gameTime);
