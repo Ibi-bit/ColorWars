@@ -53,9 +53,31 @@ public class Game1 : Game
         _graphics.PreferredBackBufferWidth = 540;
         _graphics.PreferredBackBufferHeight = 960;
         Window.AllowUserResizing = true;
+        
+        // Set minimum window size to prevent crashes
+        Window.ClientSizeChanged += OnWindowSizeChanged;
 
         //9:16 aspect ratio
         _graphics.IsFullScreen = false;
+        _graphics.ApplyChanges();
+    }
+
+    private void OnWindowSizeChanged(object sender, EventArgs e)
+    {
+        // Set minimum window size constraints
+        const int minWidth = 405;  // Minimum width to ensure UI fits
+        const int minHeight = 720; // Minimum height to ensure board + reset button fits
+        
+        if (_graphics.PreferredBackBufferWidth < minWidth)
+        {
+            _graphics.PreferredBackBufferWidth = minWidth;
+        }
+        if (_graphics.PreferredBackBufferHeight < minHeight)
+        {
+            _graphics.PreferredBackBufferHeight = minHeight;
+        }
+        
+        
         _graphics.ApplyChanges();
     }
 
@@ -72,10 +94,7 @@ public class Game1 : Game
             new Gui.GuiRoundedRectangle(
                 Vector2.Zero,
                 new Vector2(0.75f, 0.4f)
-                    * new Vector2(
-                        _graphics.PreferredBackBufferWidth,
-                        _graphics.PreferredBackBufferHeight
-                    ),
+                    * new Vector2(Window.ClientBounds.Width, Window.ClientBounds.Height),
                 10f,
                 Color.BlanchedAlmond
             )
@@ -273,10 +292,7 @@ public class Game1 : Game
             new Gui.GuiRoundedRectangle(
                 Vector2.Zero,
                 new Vector2(0.75f, 0.4f)
-                    * new Vector2(
-                        _graphics.PreferredBackBufferWidth,
-                        _graphics.PreferredBackBufferHeight
-                    ),
+                    * new Vector2(Window.ClientBounds.Width, Window.ClientBounds.Height),
                 10f,
                 Color.BlanchedAlmond
             )
@@ -314,10 +330,7 @@ public class Game1 : Game
                 _spriteBatch,
                 _primitiveBatch,
                 _font,
-                new Vector2(
-                    _graphics.PreferredBackBufferWidth,
-                    _graphics.PreferredBackBufferHeight
-                ),
+                new Vector2(Window.ClientBounds.Width, Window.ClientBounds.Height),
                 (from, t, color)
             );
             if (_explosionIndex > 0)
@@ -345,7 +358,7 @@ public class Game1 : Game
                 _spriteBatch,
                 _primitiveBatch,
                 _font,
-                new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight)
+                new Vector2(Window.ClientBounds.Width, Window.ClientBounds.Height)
             );
         }
         _resetButton.Draw(_spriteBatch, _primitiveBatch);

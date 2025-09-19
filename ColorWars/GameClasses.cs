@@ -377,15 +377,28 @@ public class GuiBoard : Board
         Gui.GuiRectangle guiRectangle
     )
     {
-        // The background should be 0.75 * width wide and 0.4 * height tall, centered
-        Vector2 size = new Vector2(screen.X * xPercentageOfScreen, screen.Y * yPercentageOfScreen);
-        Vector2 position = new Vector2((screen.X - size.X) / 2f, (screen.Y - size.Y) / 2f);
+        // The background should be a square, centered with room for reset button below
+        // Reserve space for reset button below the board (about 15% of screen height)
+        float maxHeight = screen.Y * 0.85f; // Leave 15% for reset button and margins
+        
+        float width = screen.X * xPercentageOfScreen;
+        float height = screen.Y * yPercentageOfScreen;
+        
+        // Clamp to reasonable bounds
+        width = float.Clamp(width, 200, screen.X - 40);
+        height = float.Clamp(height, 150, maxHeight);
+        
+        // Make it square - use the smaller dimension
+        float squareSize = Math.Min(width, height);
+        
+        Vector2 size = new Vector2(squareSize, squareSize);
+        Vector2 position = new Vector2((screen.X - size.X) / 2f, (screen.Y - size.Y) / 3f); // Position higher to leave room below
         guiRectangle.Size = size;
         guiRectangle.Position = position;
         return guiRectangle;
     }
 
-    public bool UpdateMouse(MouseState mouseState, Player player, bool isFirstTurn)
+    public bool UpdateMouse(MouseState mouseState, Player player, bool isFirstTurn) 
     {
         bool turn = false;
         if (player != null)
