@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ColorWars")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fff9bb4679ff6dacadf4a422fe1c50b283832393")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6f6c9ae31a11d0bcaea9eb457344006110fb02bf")]
 [assembly: System.Reflection.AssemblyProductAttribute("ColorWars")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ColorWars")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

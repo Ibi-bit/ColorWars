@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "manEmFSWJl4=",
+  "dgSpecHash": "+gbX7UTAMSOqUuCaWLavKh8f9Q2QcrFJTQ1H7jhP/1jmXaZlj4bCuZCpazZCi3qcem4a3sHy/j8rkFVoTh/uLg==",
   "success": true,
   "projectFilePath": "/Users/sampartington/Documents/ColorWars/ColorWars/ColorWars.csproj",
   "expectedPackageFiles": [
@@ -10,10 +10,7 @@
     "/Users/sampartington/.nuget/packages/monogame.library.sdl/2.26.5.5/monogame.library.sdl.2.26.5.5.nupkg.sha512",
     "/Users/sampartington/.nuget/packages/nvorbis/0.10.4/nvorbis.0.10.4.nupkg.sha512",
     "/Users/sampartington/.nuget/packages/system.memory/4.5.3/system.memory.4.5.3.nupkg.sha512",
-    "/Users/sampartington/.nuget/packages/system.valuetuple/4.5.0/system.valuetuple.4.5.0.nupkg.sha512",
-    "/Users/sampartington/.nuget/packages/microsoft.netcore.app.ref/8.0.11/microsoft.netcore.app.ref.8.0.11.nupkg.sha512",
-    "/Users/sampartington/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.11/microsoft.aspnetcore.app.ref.8.0.11.nupkg.sha512",
-    "/Users/sampartington/.nuget/packages/microsoft.netcore.app.host.osx-arm64/8.0.11/microsoft.netcore.app.host.osx-arm64.8.0.11.nupkg.sha512"
+    "/Users/sampartington/.nuget/packages/system.valuetuple/4.5.0/system.valuetuple.4.5.0.nupkg.sha512"
   ],
   "logs": []
 }

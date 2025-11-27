@@ -11,5 +11,3 @@ build_property.RootNamespace = ColorWars
 build_property.ProjectDir = /Users/sampartington/Documents/ColorWars/ColorWars/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
-build_property.EffectiveAnalysisLevelStyle = 8.0
-build_property.EnableCodeStyleSeverity = 
